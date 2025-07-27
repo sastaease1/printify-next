@@ -35,11 +35,19 @@ const Auth = () => {
       const { error } = await signIn(signInData.email, signInData.password);
       
       if (error) {
-        toast({
-          title: "Sign in failed",
-          description: error.message,
-          variant: "destructive"
-        });
+        if (error.message === "Email not confirmed") {
+          toast({
+            title: "Email verification required",
+            description: "Please check your email inbox (including spam folder) and click the verification link before signing in.",
+            variant: "destructive"
+          });
+        } else {
+          toast({
+            title: "Sign in failed",
+            description: error.message,
+            variant: "destructive"
+          });
+        }
       } else {
         toast({
           title: "Welcome back!",
@@ -79,7 +87,7 @@ const Auth = () => {
       } else {
         toast({
           title: "Account created!",
-          description: "Please check your email to verify your account"
+          description: "Please check your email inbox (including spam folder) and click the verification link to activate your account before signing in."
         });
       }
     } catch (error) {
